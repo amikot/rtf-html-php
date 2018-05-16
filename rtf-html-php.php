@@ -463,7 +463,92 @@
           $this->openedTags['p'] = True;
         }
       }
- 
+       elseif($word->word == "cell")
+      {
+        if ($this->openedTags["table"]) {
+			if ($this->openedTags["row"]) {
+				if ($this->openedTags["cell"]) {
+					$this->output .= ("</td><td>");
+				}
+				else
+				{
+					$this->output .= ("<td>");
+			        $this->openedTags['cell'] = True;
+				}
+			}
+			else {
+				$this->output .= ("<tr><td>");
+		        $this->openedTags['cell'] = True;
+		        $this->openedTags['row'] = True;
+			}
+        }
+        else
+        {
+			$this->output .= "<table border='1'><tr><td>";
+			$this->openedTags['table'] = True;
+			$this->openedTags['row'] = True;
+			$this->openedTags['cell'] = True;
+        }
+      }
+      elseif($word->word == "trowd")
+      {
+        if ($this->openedTags["table"]) {
+			if ($this->openedTags["row"]) {
+				if ($this->openedTags["cell"]) {
+					$this->output = substr($this->output, 0, -4);
+					$this->output .= ("<tr><td>");
+					$this->openedTags['table'] = True;
+					$this->openedTags['row'] = True;
+					$this->openedTags['cell'] = True;
+				}
+				else
+				{
+					$this->output .= ("<td>");
+			        $this->openedTags['cell'] = True;
+				}
+			}
+			else {
+				$this->output .= ("<tr><td>");
+		        $this->openedTags['cell'] = True;
+		        $this->openedTags['row'] = True;
+			}
+        }
+        else
+        {
+			$this->output .= "<table border='1'><tr><td>";
+			$this->openedTags['table'] = True;
+			$this->openedTags['row'] = True;
+			$this->openedTags['cell'] = True;
+        }
+      }
+      elseif($word->word == "row")
+      {
+        if ($this->openedTags["table"]) {
+			if ($this->openedTags["row"]) {
+				if ($this->openedTags["cell"]) {
+					$this->output = substr($this->output, 0, -4);
+					$this->output .= ("</tr>");
+					$this->openedTags['table'] = True;
+					$this->openedTags['row'] = False;
+					$this->openedTags['cell'] = False;
+				}
+				else
+				{
+			        $this->openedTags['cell'] = False;
+				}
+			}
+			else {
+		        $this->openedTags['cell'] = False;
+		        $this->openedTags['row'] = False;
+			}
+        }
+        else
+        {
+			$this->openedTags['table'] = False;
+			$this->openedTags['row'] = False;
+			$this->openedTags['cell'] = False;
+        }
+      }
       // Characters:
       elseif($word->word == "lquote") $this->output .= "&lsquo;";
       elseif($word->word == "rquote") $this->output .= "&rsquo;";
