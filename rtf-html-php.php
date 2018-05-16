@@ -434,7 +434,11 @@
         elseif($child instanceof RtfControlSymbol) $this->FormatControlSymbol($child);
         elseif($child instanceof RtfText) $this->FormatText($child);
       }
- 
+       if ($this->openedTags["table"]) {
+			$this->output .= ("</table>");
+	        $this->openedTags['cell'] = false;
+	        $this->openedTags['row'] = false;
+        }  
       // Pop state from stack.
       array_pop($this->states);
       $this->state = $this->states[sizeof($this->states)-1];
